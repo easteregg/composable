@@ -16,10 +16,7 @@ import BigNumber from "bignumber.js";
 
 export type WalletProps = {
   onConnectEthereumWallet?: (walletId: ConnectorType) => Promise<any>;
-  onConnectPolkadotWallet: (
-    walletId?: SupportedWalletId,
-    selectedDefaultAccount?: boolean
-  ) => Promise<any[] | undefined>;
+  onConnectPolkadotWallet: (walletId: SupportedWalletId) => Promise<unknown>;
   onDisconnectEthereum?: (...args: unknown[]) => Promise<void> | void;
   onDisconnectDotsamaWallet: (() => Promise<void>) | undefined;
   onSelectPolkadotAccount: (account: InjectedAccountWithMeta) => void;

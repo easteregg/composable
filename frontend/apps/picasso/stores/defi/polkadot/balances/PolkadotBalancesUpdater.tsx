@@ -2,13 +2,6 @@ import { SubstrateNetworkId } from "@/defi/polkadot/types";
 import { callbackGate } from "shared";
 import { useCallback, useEffect } from "react";
 import { useStore } from "@/stores/root";
-import {
-  ParachainApi,
-  ParachainId,
-  RelayChainId,
-  useDotSamaContext,
-  useEagerConnect,
-} from "substrate-react";
 
 import {
   subscribeKaruraBalance,
@@ -18,18 +11,15 @@ import {
 } from "@/defi/polkadot/pallets/Balances";
 import { TokenMetadata } from "../tokens/slice";
 import { SUBSTRATE_NETWORKS } from "@/defi/polkadot/Networks";
-import {
-  karuraAssetsList,
-  picassoAssetsList,
-} from "@/defi/polkadot/pallets/Assets";
+import { picassoAssetsList } from "@/defi/polkadot/pallets/Assets";
 import { VoidFn } from "@polkadot/api/types";
-import { AcalaPrimitivesCurrencyCurrencyId } from "@acala-network/types/interfaces/types-lookup";
-import { ApiPromise } from "@polkadot/api";
 import { kusamaAssetsList } from "@/defi/polkadot/pallets/Assets/kusama";
 import { statemineAssetList } from "@/defi/polkadot/pallets/Assets/statemine";
+import { useWallet } from "@/defi/queries/defi/useWallet";
 
 const PolkadotBalancesUpdater = () => {
-  useEagerConnect("picasso");
+  // TODO: Implement eager connect
+  // useEagerConnect("picasso");
   // useEagerConnect("karura");
 
   const isLoaded = useStore((state) => state.substrateTokens.isLoaded);
@@ -47,13 +37,7 @@ const PolkadotBalancesUpdater = () => {
     ({ substrateBalances }) => substrateBalances.clearBalance
   );
 
-  const {
-    extensionStatus,
-    selectedAccount,
-    parachainProviders,
-    relaychainProviders,
-    connectedAccounts,
-  } = useDotSamaContext();
+  const { isConnected, currentAccount, accounts } = useWallet();
 
   /**
    * This effect fetches
@@ -62,25 +46,24 @@ const PolkadotBalancesUpdater = () => {
    * after API creation
    */
   useEffect(() => {
-
     if (parachainProviders.picasso.parachainApi) {
       picassoAssetsList(parachainProviders.picasso.parachainApi).then(
-        (picaAssetMetadataList) =>  {
-          updateTokens(picaAssetMetadataList, [], null)
+        (picaAssetMetadataList) => {
+          updateTokens(picaAssetMetadataList, [], null);
         }
-      )
+      );
     }
 
     if (relaychainProviders.kusama.parachainApi) {
       kusamaAssetsList(relaychainProviders.kusama.parachainApi).then(
-        kusamaAsset => updateTokens([], [], kusamaAsset)
-      )
+        (kusamaAsset) => updateTokens([], [], kusamaAsset)
+      );
     }
 
     if (parachainProviders.statemine.parachainApi) {
       statemineAssetList(parachainProviders.statemine.parachainApi).then(
-        statemineAssets => updateTokens([], statemineAssets, null)
-      )
+        (statemineAssets) => updateTokens([], statemineAssets, null)
+      );
     }
   }, [
     parachainProviders,

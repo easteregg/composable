@@ -1,4 +1,3 @@
-import { useTheme } from "@mui/material";
 import {
   SupportedWalletId,
   useEagerConnect,
@@ -9,7 +8,7 @@ import { NetworkId, Wallet } from "wallet";
 import { ConnectorType, useBlockchainProvider, useConnector } from "bi-lib";
 import { useStore } from "@/stores/root";
 import type { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
-import { useWallet } from "@/defi/queries/defi/useAccounts";
+import { useWallet } from "@/defi/queries/defi/useWallet";
 
 const BLOCKCHAIN_NETWORKS_SUPPORTED = [
   {
@@ -54,7 +53,6 @@ const ETHEREUM_WALLETS_SUPPORTED = [
 ];
 
 export const PolkadotConnect: React.FC<{}> = () => {
-  const theme = useTheme();
   const { activate, deactivate, accounts, selectedAccount, setSelectedIndex } =
     useWallet();
   const { account, connectorType } = useBlockchainProvider(DEFAULT_EVM_ID);
@@ -88,7 +86,9 @@ export const PolkadotConnect: React.FC<{}> = () => {
       isEthereumWalletActive={
         biLibConnector.isActive ? biLibConnector.isActive : false
       }
-      polkadotExtensionStatus={"connected"}
+      polkadotExtensionStatus={
+        accounts.get("picasso")?.length ? "connected" : "connecting"
+      }
       selectedPolkadotAccount={
         accounts.get("picasso")?.[selectedAccount] ?? undefined
       }

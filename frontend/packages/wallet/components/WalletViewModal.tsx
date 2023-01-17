@@ -189,6 +189,7 @@ export const WalletViewModal: FC<WalletViewProps> = ({
               <Tab label="Transactions" />
             </Tabs>
           </Box>
+          {console.log({ selectedPolkadotWallet, selectedPolkadotAccount })}
           {selectedPolkadotAccount && selectedPolkadotWallet && (
             <PolkadotAccountView
               selectedPolkadotAccount={selectedPolkadotAccount}

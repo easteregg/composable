@@ -14,10 +14,11 @@ import { CrowdloanRewardsFeaturedBox } from "@/components/Organisms/CrowdloanRew
 import { useState } from "react";
 import { MyStakesTable } from "@/components/Molecules/MyStakesTable";
 import { useStore } from "@/stores/root";
-import { useDotSamaContext } from "substrate-react";
+import { useWallet } from "@/defi/queries/defi/useWallet";
 
 const Overview: NextPage = () => {
-  const { extensionStatus } = useDotSamaContext();
+  const { isConnected } = useWallet();
+
   const myStakes = useStore((state) => state.polkadot.myStakingAssets);
   const tabs: TabItem[] = [
     { label: "My assets" },
@@ -51,7 +52,7 @@ const Overview: NextPage = () => {
             subtitle="Your Portfolio in full view. Check on your positions and claim rewards."
           />
         </Grid>
-        {extensionStatus !== "connected" && (
+        {!isConnected && (
           <Grid item {...standardPageSize}>
             <ConnectWalletFeaturedBox />
           </Grid>
@@ -59,7 +60,7 @@ const Overview: NextPage = () => {
         <Grid item {...standardPageSize}>
           <CrowdloanRewardsFeaturedBox />
         </Grid>
-        {extensionStatus === "connected" && (
+        {isConnected && (
           <Grid item {...standardPageSize}>
             <Tabs
               items={tabs}

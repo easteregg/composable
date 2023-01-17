@@ -1,5 +1,4 @@
-import { useCallback, useState } from "react";
-import { ConnectedAccounts } from "substrate-react";
+import { useCallback, useMemo } from "react";
 import {
   InjectedAccount,
   InjectedAccountWithMeta,
@@ -9,11 +8,7 @@ import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
 import { useApi } from "@/defi/queries/defi/usePicassoApi";
 import { SubstrateNetworkId } from "shared";
 import { ApiPromise } from "@polkadot/api";
-
-export enum SupportedWalletId {
-  Talisman = "talisman",
-  Polkadotjs = "polkadot-js",
-}
+import { SupportedWalletId, useWalletStore } from "@/stores/defi/wallet";
 
 function injectMeta(
   source: string,
@@ -31,14 +26,6 @@ function injectMeta(
     })
   );
 }
-
-const DEFAULT_ACCOUNTS: ConnectedAccounts = {
-  picasso: [],
-  karura: [],
-  kusama: [],
-  polkadot: [],
-  statemine: [],
-};
 
 export const getInjected = async (
   walletId: SupportedWalletId = SupportedWalletId.Polkadotjs
@@ -59,15 +46,12 @@ export const activate = async (
     const mapped: Map<SubstrateNetworkId, InjectedAccountWithMeta[]> =
       new Map();
     for (const [chainId, api] of Object.entries(providers)) {
-      const ss58Format =
-        providers[
-          chainId as SubstrateNetworkId
-        ].consts.system.ss58Prefix.toNumber();
+      const ss58Format = api.consts.system.ss58Prefix.toNumber();
       const accounts = await injected.accounts.get();
       const withMeta = injectMeta(walletId, accounts, ss58Format);
       mapped.set(chainId as SubstrateNetworkId, withMeta);
     }
-    return mapped;
+    return [mapped, injected] as const;
   } catch (e) {
     return Promise.reject(e);
   }
@@ -75,22 +59,45 @@ export const activate = async (
 
 export const useWallet = () => {
   const { data: providers } = useApi();
-  const [accounts, setAccounts] = useState<
-    Map<SubstrateNetworkId, InjectedAccountWithMeta[]>
-  >(new Map());
-  const [selectedAccountIndex, setSelectedAccountIndex] = useState(-1);
+  const {
+    accounts,
+    selectedAccountIndex,
+    walletId,
+    injected,
+    setWalletId,
+    setSelectedAccountIndex,
+    setAccounts,
+    setInjected,
+  } = useWalletStore();
+
+  const isConnected = useMemo(() => {
+    return Boolean(
+      selectedAccountIndex !== -1 &&
+        accounts.get("picasso")?.[selectedAccountIndex]
+    );
+  }, [accounts, selectedAccountIndex]);
+
   const activateWallet = useCallback(
-    (walletId: SupportedWalletId, defaultAccount = false) => {
-      if (!providers) return null;
-      activate(walletId, providers).then((accounts) => {
-        setAccounts(accounts);
-        if (defaultAccount) {
-          setSelectedAccountIndex(accounts.get("picasso")?.length ? 0 : -1);
-        }
-      });
+    async (walletId: SupportedWalletId, defaultAccount = false) => {
+      if (!providers) return;
+      const [accounts, injected] = await activate(walletId, providers);
+      setAccounts(accounts);
+      setWalletId(walletId);
+      setInjected(injected);
+      if (defaultAccount) {
+        setSelectedAccountIndex(accounts.get("picasso")?.length ? 0 : -1);
+      }
     },
-    [providers]
+    [providers, setAccounts, setInjected, setSelectedAccountIndex, setWalletId]
   );
+
+  const signer = useMemo(() => {
+    return injected?.signer;
+  }, [injected?.signer]);
+
+  const currentAccount = useMemo(() => {
+    return accounts.get("picasso")?.[selectedAccountIndex];
+  }, [accounts, selectedAccountIndex]);
 
   const deactivate = async (): Promise<void> => {
     setSelectedAccountIndex(-1);
@@ -102,5 +109,9 @@ export const useWallet = () => {
     selectedAccount: selectedAccountIndex,
     deactivate,
     setSelectedIndex: setSelectedAccountIndex,
+    walletId,
+    isConnected,
+    signer,
+    currentAccount,
   };
 };

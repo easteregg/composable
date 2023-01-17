@@ -4,18 +4,16 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { FeaturedBox, PageTitle, SS8WalletHelper } from "@/components";
 import { ConnectorType, useBlockchainProvider, useConnector } from "bi-lib";
-import { useSelectedAccount } from "@/defi/polkadot/hooks";
-import { useDotSamaContext } from "substrate-react";
 import { useCrowdloanRewardsEligibility } from "@/stores/defi/polkadot/crowdloanRewards/hooks";
 import { DEFAULT_EVM_ID } from "@/defi/polkadot/constants";
 import Default from "@/components/Templates/Default";
 import Image from "next/image";
+import { useWallet } from "@/defi/queries/defi/useWallet";
 
 const CrowdloanRewards: NextPage = () => {
   const theme = useTheme();
   const router = useRouter();
   const { account } = useBlockchainProvider(DEFAULT_EVM_ID);
-  const selectedAccount = useSelectedAccount();
 
   const breadcrumbs = [
     <Link key="Overview" underline="none" color="primary" href="/">
@@ -29,13 +27,12 @@ const CrowdloanRewards: NextPage = () => {
     xs: 12,
   };
 
-  const { extensionStatus } = useDotSamaContext();
   const { isActive } = useConnector(ConnectorType.MetaMask);
-
+  const { isConnected, currentAccount } = useWallet();
   const { isEthAccountEligible, isPicassoAccountEligible } =
     useCrowdloanRewardsEligibility(
       account?.toLowerCase(),
-      selectedAccount?.address
+      currentAccount?.address
     );
 
   useEffect(() => {
@@ -45,7 +42,7 @@ const CrowdloanRewards: NextPage = () => {
   }, [
     router,
     account,
-    selectedAccount,
+    currentAccount,
     isEthAccountEligible,
     isPicassoAccountEligible,
   ]);
@@ -96,7 +93,7 @@ const CrowdloanRewards: NextPage = () => {
                 label: "Claim with Polkadot.js",
                 variant: "contained",
                 fullWidth: true,
-                disabled: extensionStatus !== "connected",
+                disabled: !isConnected,
                 onClick: () => {
                   router.push("/crowdloan-rewards/claim");
                 },

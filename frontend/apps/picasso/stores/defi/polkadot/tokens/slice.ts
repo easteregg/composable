@@ -98,7 +98,7 @@ export const createTokensSlice: StoreSlice<TokensSlice> = (set) => ({
             }
           });
         }
-        
+
         if (picassoList) {
           picassoList.forEach((listItem) => {
             /**
@@ -117,7 +117,7 @@ export const createTokensSlice: StoreSlice<TokensSlice> = (set) => ({
             }
           });
         }
-        
+
         // karuraList.forEach(listItem => {
         //   /**
         //    * Here identifier is in lower case
@@ -142,15 +142,14 @@ export const createTokensSlice: StoreSlice<TokensSlice> = (set) => ({
         // If more tokens are imported, this needs a dedicated function
         if (kusamaAssetMetadata) {
           state.substrateTokens.tokens.ksm.decimals.kusama =
-          kusamaAssetMetadata.decimals;
+            kusamaAssetMetadata.decimals;
 
           state.substrateTokens.tokens.ksm.chainId.kusama =
-          kusamaAssetMetadata.chainId;
-          
-          state.substrateTokens.tokens.ksm.existentialDeposit.kusama =
-          kusamaAssetMetadata.existentialDeposit;
-        }
+            kusamaAssetMetadata.chainId;
 
+          state.substrateTokens.tokens.ksm.existentialDeposit.kusama =
+            kusamaAssetMetadata.existentialDeposit;
+        }
 
         // TODO : enable this condition when karura is supported
         // if (picassoList.length + karuraList.length > 0) {
