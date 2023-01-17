@@ -4,6 +4,7 @@ const config = {
   mediumUrl: "https://medium.com/picasso-network",
   discordUrl: "https://discord.gg/composable",
   pabloUrl: "https://app.pablo.finance",
+  appName: "Picasso Parachain",
 } as const;
 
 export default config;

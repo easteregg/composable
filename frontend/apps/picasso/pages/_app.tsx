@@ -17,11 +17,13 @@ import * as definitions from "defi-interfaces/definitions";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { SnackbarProvider } from "notistack";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 import * as React from "react";
 import { hotjar } from "react-hotjar";
 import { getEnvironment } from "shared/endpoints";
 import { DotSamaContextProvider, ExecutorProvider } from "substrate-react";
+import { queryClient } from "@/defi/queries/setup";
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -48,21 +50,6 @@ const initializeHotjar = () => {
     );
   }
 };
-const rpc = Object.keys(definitions)
-  .filter((k) => {
-    if (!(definitions as any)[k].rpc) {
-      return false;
-    } else {
-      return Object.keys((definitions as any)[k].rpc).length > 0;
-    }
-  })
-  .reduce(
-    (accumulator, key) => ({
-      ...accumulator,
-      [key]: (definitions as any)[key].rpc,
-    }),
-    {}
-  );
 const types = Object.keys(definitions)
   .filter((key) => Object.keys((definitions as any)[key].types).length > 0)
   .reduce(
@@ -132,29 +119,31 @@ export default function MyApp(props: MyAppProps) {
                 };
               })}
             >
-              <ApolloProvider client={apolloClient}>
-                <SubstrateBalancesUpdater />
-                <CrowdloanRewardsUpdater />
-                <SnackbarProvider
-                  Components={{
-                    info: ThemeResponsiveSnackbar,
-                    success: ThemeResponsiveSnackbar,
-                    error: ThemeResponsiveSnackbar,
-                    warning: ThemeResponsiveSnackbar,
-                  }}
-                  autoHideDuration={null}
-                  maxSnack={4}
-                  disableWindowBlurListener={true}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                >
-                  <ExecutorProvider>
-                    <Component {...pageProps} />
-                  </ExecutorProvider>
-                </SnackbarProvider>
-              </ApolloProvider>
+              <QueryClientProvider client={queryClient}>
+                <ApolloProvider client={apolloClient}>
+                  <SubstrateBalancesUpdater />
+                  <CrowdloanRewardsUpdater />
+                  <SnackbarProvider
+                    Components={{
+                      info: ThemeResponsiveSnackbar,
+                      success: ThemeResponsiveSnackbar,
+                      error: ThemeResponsiveSnackbar,
+                      warning: ThemeResponsiveSnackbar,
+                    }}
+                    autoHideDuration={null}
+                    maxSnack={4}
+                    disableWindowBlurListener={true}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                  >
+                    <ExecutorProvider>
+                      <Component {...pageProps} />
+                    </ExecutorProvider>
+                  </SnackbarProvider>
+                </ApolloProvider>
+              </QueryClientProvider>
             </BlockchainProvider>
           </DotSamaContextProvider>
         </ThemeProvider>
@@ -162,3 +151,18 @@ export default function MyApp(props: MyAppProps) {
     </CacheProvider>
   );
 }
+const rpc = Object.keys(definitions)
+  .filter((k) => {
+    if (!(definitions as any)[k].rpc) {
+      return false;
+    } else {
+      return Object.keys((definitions as any)[k].rpc).length > 0;
+    }
+  })
+  .reduce(
+    (accumulator, key) => ({
+      ...accumulator,
+      [key]: (definitions as any)[key].rpc,
+    }),
+    {}
+  );

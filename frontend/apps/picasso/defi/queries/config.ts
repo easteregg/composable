@@ -1,0 +1,2 @@
+export const DEFAULT_STALE_TIME = 60_000;
+export const DEFAULT_REFRESH_TIME = 60_000;

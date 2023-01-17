@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import { NavBar } from "../Molecules";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   alpha,
   Breadcrumbs,
@@ -18,6 +19,7 @@ import {
 import { PolkadotConnect } from "../Organisms/Wallet/PolkadotConnect";
 import { GlobalSettings } from "../Organisms/Settings/GlobalSettings";
 import { ExternalLinksDropdown } from "@/components/Molecules/ExternalLinksDropdown";
+import { useParachainVersion } from "@/defi/queries/defi/useParachainVersion";
 
 type DefaultLayoutProps = {
   breadcrumbs?: ReactNode[];
@@ -154,12 +156,19 @@ export const DefaultLayout: FC<DefaultLayoutProps> = (props) => {
           }}
         >
           <Typography variant="caption">
-            {process.env.WEBSITE_VERSION}
+            <PalletVersion />
           </Typography>
         </Box>
       </Box>
+      <ReactQueryDevtools initialIsOpen={false} />
     </Box>
   );
 };
 
-export default DefaultLayout;
+const PalletVersion = () => {
+  const { data, error, isLoading } = useParachainVersion();
+
+  if (isLoading || typeof data === "undefined") return <Box />;
+  if (error) return <Box>{String(error)}</Box>;
+  return <Box width="100%">{String(data)}</Box>;
+};
