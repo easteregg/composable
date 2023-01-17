@@ -1,9 +1,6 @@
-import { useSelectedAccount } from "@/defi/polkadot/hooks";
 import { useTheme } from "@mui/material";
 import {
   SupportedWalletId,
-  useConnectedAccounts,
-  useDotSamaContext,
   useEagerConnect,
   useTransactions,
 } from "substrate-react";
@@ -12,6 +9,7 @@ import { NetworkId, Wallet } from "wallet";
 import { ConnectorType, useBlockchainProvider, useConnector } from "bi-lib";
 import { useStore } from "@/stores/root";
 import type { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
+import { useWallet } from "@/defi/queries/defi/useAccounts";
 
 const BLOCKCHAIN_NETWORKS_SUPPORTED = [
   {
@@ -57,11 +55,9 @@ const ETHEREUM_WALLETS_SUPPORTED = [
 
 export const PolkadotConnect: React.FC<{}> = () => {
   const theme = useTheme();
-  const { deactivate, extensionStatus, activate, setSelectedAccount } =
-    useDotSamaContext();
-  const accounts = useConnectedAccounts(DEFAULT_NETWORK_ID);
+  const { activate, deactivate, accounts, selectedAccount, setSelectedIndex } =
+    useWallet();
   const { account, connectorType } = useBlockchainProvider(DEFAULT_EVM_ID);
-  const connectedAccount = useSelectedAccount();
   const biLibConnector = useConnector(ConnectorType.MetaMask);
   useEagerConnect(DEFAULT_NETWORK_ID);
 
@@ -69,7 +65,7 @@ export const PolkadotConnect: React.FC<{}> = () => {
     ({ substrateBalances }) => substrateBalances.balances.picasso.pica
   );
 
-  const transactions = useTransactions(connectedAccount?.address ?? "-");
+  const transactions = useTransactions("-");
 
   return (
     <Wallet
@@ -82,25 +78,29 @@ export const PolkadotConnect: React.FC<{}> = () => {
       ethereumConnectorInUse={connectorType}
       connectedAccountNativeBalance={balance}
       onDisconnectDotsamaWallet={deactivate}
-      onConnectPolkadotWallet={activate as any}
+      onConnectPolkadotWallet={activate}
       blockchainNetworksSupported={BLOCKCHAIN_NETWORKS_SUPPORTED}
       supportedPolkadotWallets={POLKADOT_WALLETS_SUPPORTED}
       supportedEthereumWallets={ETHEREUM_WALLETS_SUPPORTED}
-      polkadotAccounts={accounts}
+      polkadotAccounts={accounts.get("picasso") ?? []}
       ethereumConnectedAccount={account}
       onConnectEthereumWallet={biLibConnector.activate as any}
       isEthereumWalletActive={
         biLibConnector.isActive ? biLibConnector.isActive : false
       }
-      polkadotExtensionStatus={extensionStatus}
-      selectedPolkadotAccount={connectedAccount}
+      polkadotExtensionStatus={"connected"}
+      selectedPolkadotAccount={
+        accounts.get("picasso")?.[selectedAccount] ?? undefined
+      }
       onDisconnectEthereum={biLibConnector.deactivate}
       onSelectPolkadotAccount={(account: InjectedAccountWithMeta) => {
-        const index = accounts.findIndex(
-          (_account) => account.address === _account.address
-        );
-        if (index >= 0 && setSelectedAccount) {
-          setSelectedAccount(index);
+        const index =
+          accounts
+            .get("picasso")
+            ?.findIndex((_account) => account.address === _account.address) ??
+          -1;
+        if (index >= 0 && setSelectedIndex) {
+          setSelectedIndex(index);
         }
       }}
     />

@@ -19,7 +19,6 @@ import {
 import { PolkadotConnect } from "../Organisms/Wallet/PolkadotConnect";
 import { GlobalSettings } from "../Organisms/Settings/GlobalSettings";
 import { ExternalLinksDropdown } from "@/components/Molecules/ExternalLinksDropdown";
-import { useParachainVersion } from "@/defi/queries/defi/useParachainVersion";
 
 type DefaultLayoutProps = {
   breadcrumbs?: ReactNode[];
@@ -155,9 +154,7 @@ export const DefaultLayout: FC<DefaultLayoutProps> = (props) => {
             height: theme.spacing(2),
           }}
         >
-          <Typography variant="caption">
-            <PalletVersion />
-          </Typography>
+          <Typography variant="caption"></Typography>
         </Box>
       </Box>
       <ReactQueryDevtools initialIsOpen={false} />
@@ -165,10 +162,4 @@ export const DefaultLayout: FC<DefaultLayoutProps> = (props) => {
   );
 };
 
-const PalletVersion = () => {
-  const { data, error, isLoading } = useParachainVersion();
-
-  if (isLoading || typeof data === "undefined") return <Box />;
-  if (error) return <Box>{String(error)}</Box>;
-  return <Box width="100%">{String(data)}</Box>;
-};
+export default DefaultLayout;
