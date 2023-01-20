@@ -72,6 +72,8 @@ export async function bootstrapPools(api: ApiPromise, wallets: KeyringPair[], wa
             api,
             wallets[walletIndex],
             poolId,
+            pool.pair.base,
+            pool.pair.quote,
             pool.liquidityAmount.base,
             pool.liquidityAmount.quote
           );
