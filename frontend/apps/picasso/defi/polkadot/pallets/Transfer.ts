@@ -1,4 +1,4 @@
-import { SUBSTRATE_NETWORKS } from "@/defi/polkadot/Networks";
+import config from "@/constants/config";
 import { SubstrateNetworkId } from "@/defi/polkadot/types";
 import { TokenMetadata } from "@/stores/defi/polkadot/tokens/slice";
 import { ApiPromise } from "@polkadot/api";
@@ -43,7 +43,7 @@ export function getAmountToTransfer({
     "u128",
     toChainIdUnit(
       calculatedAmount,
-      token.decimals[sourceChain] || SUBSTRATE_NETWORKS[sourceChain].decimals
+      token.decimals[sourceChain] || config.networks[sourceChain].decimals
     )
       .toFixed(0)
       .toString()

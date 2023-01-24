@@ -1,4 +1,3 @@
-import { ColorModeContext } from "picasso/contexts/ColorMode";
 import { getDesignTokens } from "picasso/styles/theme";
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
 import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
@@ -23,15 +22,13 @@ export const MUIDecorator: FC = ({ children }) => {
       }}
     >
       <MockedProvider mocks={[]} addTypename={false}>
-        <ColorModeContext.Provider value={colorMode}>
-          <EmotionThemeProvider theme={createTheme(getDesignTokens(mode))}>
-            <ThemeProvider theme={createTheme(getDesignTokens(mode))}>
-              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-              <CssBaseline />
-              {children}
-            </ThemeProvider>
-          </EmotionThemeProvider>
-        </ColorModeContext.Provider>
+        <EmotionThemeProvider theme={createTheme(getDesignTokens(mode))}>
+          <ThemeProvider theme={createTheme(getDesignTokens(mode))}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
+        </EmotionThemeProvider>
       </MockedProvider>
     </Box>
   );

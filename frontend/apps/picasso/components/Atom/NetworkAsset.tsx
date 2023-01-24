@@ -1,10 +1,10 @@
 import React from "react";
 import { BaseAsset, BaseAssetProps } from "./BaseAsset";
-import { NetworkId } from "@/defi/types";
 import { getNetwork } from "@/defi/Networks";
+import config from "@/constants/config";
 
 export type NetworkAssetProps = {
-  networkId: NetworkId;
+  networkId: typeof config.defiConfig.networkIds[number];
 } & BaseAssetProps;
 
 export const NetworkAsset: React.FC<NetworkAssetProps> = ({

@@ -1,9 +1,9 @@
 import { toTokenUnitsBN } from "shared";
 import { TokenId } from "tokens";
 import { ApiPromise } from "@polkadot/api";
-import { SUBSTRATE_NETWORKS } from "../../Networks";
 import { SubstrateNetworkId } from "../../types";
 import { TokenBalance } from "@/stores/defi/polkadot/balances/slice";
+import config from "@/constants/config";
 
 export async function subscribeNativeBalance(
   account: string,
@@ -27,7 +27,7 @@ export async function subscribeNativeBalance(
       data: { free, reserved },
     } = blObject;
 
-    const { decimals } = SUBSTRATE_NETWORKS[chainId as SubstrateNetworkId];
+    const { decimals } = config.networks[chainId as SubstrateNetworkId];
     const bnFree = toTokenUnitsBN(free, decimals);
     const bnLocked = toTokenUnitsBN(reserved, decimals);
 

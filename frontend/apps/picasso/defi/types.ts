@@ -1,22 +1,6 @@
-import { DEFI_CONFIG } from "./config";
 import { TokenId } from "tokens";
+import { SubstrateNetworkId } from "@/defi/polkadot/types";
 
-export type NetworkId = typeof DEFI_CONFIG.networkIds[number];
-export type Network = {
-  name: string;
-  rpcUrl: string;
-  infoPageUrl: string;
-  infoPage: string;
-  backgroundColor: string;
-  logo: string;
-  defaultTokenSymbol: string;
-  publicRpcUrl: string;
-  nativeToken: TokenId;
-};
-
-export type AMM_ID = typeof DEFI_CONFIG.ammIds[number];
-export type AMM = {
-  id: AMM_ID;
-  icon: string;
-  label: string;
+export type AllowedTransferList = {
+  [key in SubstrateNetworkId]: Record<SubstrateNetworkId, Array<TokenId>>;
 };

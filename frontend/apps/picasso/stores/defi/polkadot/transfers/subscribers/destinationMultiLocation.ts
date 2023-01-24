@@ -1,6 +1,6 @@
+import config from "@/constants/config";
 import { AllProviders } from "@/defi/polkadot/context/hooks";
 import { useStore } from "@/stores/root";
-import { SUBSTRATE_NETWORKS } from "@/defi/polkadot/Networks";
 import { XcmVersionedMultiLocation } from "@polkadot/types/lookup";
 
 export const subscribeDestinationMultiLocation = async (
@@ -18,7 +18,7 @@ export const subscribeDestinationMultiLocation = async (
       const api = allProviders[sourceChain]?.parachainApi;
       if (!api) return;
 
-      const targetChainId = SUBSTRATE_NETWORKS[targetChain].parachainId;
+      const targetChainId = config.networks[targetChain].parachainId;
       const recipient = selectedAddress.length
         ? selectedAddress
         : targetAddress;

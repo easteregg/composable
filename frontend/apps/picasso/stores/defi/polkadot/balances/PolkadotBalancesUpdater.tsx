@@ -10,12 +10,12 @@ import {
   subscribeStatemineBalance,
 } from "@/defi/polkadot/pallets/Balances";
 import { TokenMetadata } from "../tokens/slice";
-import { SUBSTRATE_NETWORKS } from "@/defi/polkadot/Networks";
 import { picassoAssetsList } from "@/defi/polkadot/pallets/Assets";
 import { VoidFn } from "@polkadot/api/types";
 import { kusamaAssetsList } from "@/defi/polkadot/pallets/Assets/kusama";
 import { statemineAssetList } from "@/defi/polkadot/pallets/Assets/statemine";
 import { useWallet } from "@/defi/queries/defi/useWallet";
+import config from "@/constants/config";
 
 const PolkadotBalancesUpdater = () => {
   // TODO: Implement eager connect
@@ -110,21 +110,20 @@ const PolkadotBalancesUpdater = () => {
       Object.entries({ ...parachainProviders, ...relaychainProviders }).forEach(
         ([chainId, chain]) => {
           console.log("Subscribing native balance", chainId);
-          if (
-            connectedAccounts[chainId as RelayChainId | ParachainId] &&
-            chain.parachainApi
-          ) {
-            subscribeNativeBalance(
-              connectedAccounts[chainId as ParachainId | RelayChainId][
-                selectedAccount
-              ].address,
-              chain.parachainApi,
-              chainId,
-              SUBSTRATE_NETWORKS[chainId as SubstrateNetworkId].tokenId,
-              updateBalance
-            ).then((subscription) => {
-              subscriptionList.push(subscription);
-            });
+          if (connectedAccounts[chainId as RelayChainId | ParachainId]) {
+            if (chain.parachainApi) {
+              subscribeNativeBalance(
+                connectedAccounts[chainId as ParachainId | RelayChainId][
+                  selectedAccount
+                ].address,
+                chain.parachainApi,
+                chainId,
+                config.networks[chainId as SubstrateNetworkId].tokenId,
+                updateBalance
+              ).then((subscription) => {
+                subscriptionList.push(subscription);
+              });
+            }
           }
         }
       );
@@ -164,7 +163,7 @@ const PolkadotBalancesUpdater = () => {
         Object.values(tokens).forEach((asset) => {
           switch (chainId) {
             case "picasso":
-              if (SUBSTRATE_NETWORKS.picasso.tokenId !== asset.id) {
+              if (config.networks.picasso.tokenId !== asset.id) {
                 picassoBalanceSubscriber(
                   chain,
                   asset,
@@ -177,7 +176,7 @@ const PolkadotBalancesUpdater = () => {
               // Ignore native token since for that we need to fetch system
               if (
                 connectedAccounts.karura[selectedAccount] &&
-                SUBSTRATE_NETWORKS.karura.tokenId !== asset.id
+                config.networks.karura.tokenId !== asset.id
               ) {
                 subscribeKaruraBalance(
                   api,
@@ -196,7 +195,7 @@ const PolkadotBalancesUpdater = () => {
             case "statemine":
               if (
                 connectedAccounts.statemine[selectedAccount] &&
-                SUBSTRATE_NETWORKS.statemine.tokenId !== asset.id
+                config.networks.statemine.tokenId !== asset.id
               ) {
                 subscribeStatemineBalance(
                   api,

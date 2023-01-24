@@ -1,7 +1,7 @@
 import { ApiPromise } from "@polkadot/api";
 import BigNumber from "bignumber.js";
 import { fromChainIdUnit, unwrapNumberOrHex } from "shared";
-import { SUBSTRATE_NETWORKS } from "@/defi/polkadot/Networks";
+import config from "@/constants/config";
 
 export type KusamaAsset = {
   chainId: string;
@@ -16,12 +16,12 @@ export function kusamaAssetsList(api: ApiPromise): Promise<KusamaAsset> {
   return new Promise((res) => {
     res({
       chainId: "1",
-      name: SUBSTRATE_NETWORKS.kusama.tokenId,
-      decimals: SUBSTRATE_NETWORKS.kusama.decimals,
-      symbol: SUBSTRATE_NETWORKS.kusama.symbol,
+      name: config.networks.kusama.tokenId,
+      decimals: config.networks.kusama.decimals,
+      symbol: config.networks.kusama.symbol,
       existentialDeposit: fromChainIdUnit(
         unwrapNumberOrHex(existentialDeposit.toString()),
-        SUBSTRATE_NETWORKS.kusama.decimals
+        config.networks.kusama.decimals
       ),
     });
   });

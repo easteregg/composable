@@ -1,6 +1,4 @@
 import { BaseAsset, Select } from "@/components";
-
-import { SUBSTRATE_NETWORKS } from "@/defi/polkadot/Networks";
 import {
   getPaymentAsset,
   setPaymentAsset,
@@ -25,6 +23,7 @@ import { useExecutor } from "substrate-react";
 import { TokenId } from "tokens";
 import { useWallet } from "@/defi/queries/defi/useWallet";
 import { useApi } from "@/defi/queries/defi/usePicassoApi";
+import config from "@/constants/config";
 
 type Props = {
   toggleModal: () => void;
@@ -52,7 +51,7 @@ export const GasFeeDropdown: FC<Props> = ({
       .filter((token) => !!token.chainId.picasso)
       .filter(
         (token) =>
-          token.id === SUBSTRATE_NETWORKS.picasso.tokenId ||
+          token.id === config.networks.picasso.tokenId ||
           !balances["picasso"][token.id].free.isZero()
       )
       .map((token) => ({

@@ -1,7 +1,5 @@
 import { client as apolloClient } from "@/apollo/apolloGraphql";
 import { ThemeResponsiveSnackbar } from "@/components/Molecules/Snackbar";
-import { ColorModeContext } from "@/contexts/ColorMode";
-import { NETWORKS } from "@/defi/Networks";
 import { APP_NAME } from "@/defi/polkadot/constants";
 import SubstrateBalancesUpdater from "@/stores/defi/polkadot/balances/PolkadotBalancesUpdater";
 import CrowdloanRewardsUpdater from "@/stores/defi/polkadot/crowdloanRewards/CrowdloanRewardsUpdater";
@@ -24,6 +22,7 @@ import { hotjar } from "react-hotjar";
 import { getEnvironment } from "endpoints";
 import { DotSamaContextProvider, ExecutorProvider } from "substrate-react";
 import { queryClient } from "@/defi/queries/setup";
+import config from "@/constants/config";
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -83,71 +82,71 @@ export default function MyApp(props: MyAppProps) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <DotSamaContextProvider
-            supportedRelaychains={[
-              {
-                chainId: "kusama",
-                rpcUrl: getEnvironment("kusama"),
-                rpc: {},
-                types: {},
-              },
-            ]}
-            supportedParachains={[
-              {
-                chainId: "statemine",
-                rpcUrl: getEnvironment("statemine"),
-                rpc: {},
-                types: {},
-              },
-              {
-                chainId: "picasso",
-                rpcUrl: getEnvironment("picasso"),
-                rpc,
-                types,
-              },
-            ]}
-            appName={APP_NAME}
-          >
-            <BlockchainProvider
-              blockchainInfo={Object.entries(NETWORKS).map(([netId, net]) => {
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <DotSamaContextProvider
+          supportedRelaychains={[
+            {
+              chainId: "kusama",
+              rpcUrl: getEnvironment("kusama"),
+              rpc: {},
+              types: {},
+            },
+          ]}
+          supportedParachains={[
+            {
+              chainId: "statemine",
+              rpcUrl: getEnvironment("statemine"),
+              rpc: {},
+              types: {},
+            },
+            {
+              chainId: "picasso",
+              rpcUrl: getEnvironment("picasso"),
+              rpc,
+              types,
+            },
+          ]}
+          appName={APP_NAME}
+        >
+          <BlockchainProvider
+            blockchainInfo={Object.entries(config.evmNetworks).map(
+              ([netId, net]) => {
                 return {
                   chainId: +netId,
                   rpcUrl: net.rpcUrl,
                 };
-              })}
-            >
-              <QueryClientProvider client={queryClient}>
-                <ApolloProvider client={apolloClient}>
-                  <SubstrateBalancesUpdater />
-                  <CrowdloanRewardsUpdater />
-                  <SnackbarProvider
-                    Components={{
-                      info: ThemeResponsiveSnackbar,
-                      success: ThemeResponsiveSnackbar,
-                      error: ThemeResponsiveSnackbar,
-                      warning: ThemeResponsiveSnackbar,
-                    }}
-                    autoHideDuration={null}
-                    maxSnack={4}
-                    disableWindowBlurListener={true}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                  >
-                    <ExecutorProvider>
-                      <Component {...pageProps} />
-                    </ExecutorProvider>
-                  </SnackbarProvider>
-                </ApolloProvider>
-              </QueryClientProvider>
-            </BlockchainProvider>
-          </DotSamaContextProvider>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
+              }
+            )}
+          >
+            <QueryClientProvider client={queryClient}>
+              <ApolloProvider client={apolloClient}>
+                <SubstrateBalancesUpdater />
+                <CrowdloanRewardsUpdater />
+                <SnackbarProvider
+                  Components={{
+                    info: ThemeResponsiveSnackbar,
+                    success: ThemeResponsiveSnackbar,
+                    error: ThemeResponsiveSnackbar,
+                    warning: ThemeResponsiveSnackbar,
+                  }}
+                  autoHideDuration={null}
+                  maxSnack={4}
+                  disableWindowBlurListener={true}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                >
+                  <ExecutorProvider>
+                    <Component {...pageProps} />
+                  </ExecutorProvider>
+                </SnackbarProvider>
+              </ApolloProvider>
+            </QueryClientProvider>
+          </BlockchainProvider>
+        </DotSamaContextProvider>
+      </ThemeProvider>
     </CacheProvider>
   );
 }
