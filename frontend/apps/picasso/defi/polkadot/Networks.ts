@@ -1,4 +1,4 @@
-import { getEnvironment } from "shared/endpoints";
+import { getEnvironment } from "endpoints";
 import { SubstrateNetwork, SubstrateNetworkId } from "./types";
 import {
   KARURA_SUBSCAN_URL,

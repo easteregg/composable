@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { stringToU8a } from "@polkadot/util";
 import { SubstrateNetwork, SubstrateNetworkId } from "..";
-import { getEnvironment } from "../endpoints";
+import { getEnvironment } from "endpoints";
 
 export const PERMILL_UNIT = new BigNumber(1_000_000);
 export const PERBILL_UNIT = new BigNumber(1_000_000_000);

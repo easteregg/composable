@@ -7,12 +7,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import {
-  EndpointPreset,
-  endpointPresets,
-  getEnvironment,
-  setEndpointPreset,
-} from "shared/endpoints";
+import { getCurrent, setCurrent } from "./endpointStore";
+import { endpointPresets } from "./constants";
+import { EndpointPreset } from "./types";
 
 export const EndpointPage = () => {
   return (
@@ -23,31 +20,31 @@ export const EndpointPage = () => {
           <ListItem>
             <ListItemText
               primary={"Subsquid Endpoint"}
-              secondary={getEnvironment("subsquid")}
+              secondary={getCurrent("subsquid")}
             />
           </ListItem>
           <ListItem>
             <ListItemText
               primary={"Picasso parachain"}
-              secondary={getEnvironment("picasso")}
+              secondary={getCurrent("picasso")}
             />
           </ListItem>
           <ListItem>
             <ListItemText
               primary={"Relay chain"}
-              secondary={getEnvironment("kusama")}
+              secondary={getCurrent("kusama")}
             />
           </ListItem>
           <ListItem>
             <ListItemText
               primary={"Karura parachain"}
-              secondary={getEnvironment("karura")}
+              secondary={getCurrent("karura")}
             />
           </ListItem>
           <ListItem>
             <ListItemText
               primary={"Statemine parachain"}
-              secondary={getEnvironment("statemine")}
+              secondary={getCurrent("statemine")}
             />
           </ListItem>
         </List>
@@ -62,7 +59,7 @@ export const EndpointPage = () => {
               <Button
                 key={key}
                 variant="contained"
-                onClick={() => setEndpointPreset(preset as EndpointPreset)}
+                onClick={() => setCurrent(preset as EndpointPreset)}
               >
                 {preset}
               </Button>

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "devDependencies": {
     "@mui/material": "*",
-    "shared": "*",
+    "zustand": "*",
     "eslint-config-custom": "*"
   }
 }

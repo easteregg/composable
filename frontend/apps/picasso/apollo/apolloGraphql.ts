@@ -1,5 +1,5 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { getEnvironment } from "shared/endpoints";
+import { getEnvironment } from "endpoints";
 
 export const client = new ApolloClient({
   uri: getEnvironment("subsquid"),

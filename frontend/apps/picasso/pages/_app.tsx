@@ -21,7 +21,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 
 import * as React from "react";
 import { hotjar } from "react-hotjar";
-import { getEnvironment } from "shared/endpoints";
+import { getEnvironment } from "endpoints";
 import { DotSamaContextProvider, ExecutorProvider } from "substrate-react";
 import { queryClient } from "@/defi/queries/setup";
 // Client-side cache, shared for the whole session of the user in the browser.
