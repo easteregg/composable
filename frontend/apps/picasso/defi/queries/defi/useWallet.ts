@@ -5,7 +5,6 @@ import {
 } from "@polkadot/extension-inject/types";
 import config from "@/constants/config";
 import { decodeAddress, encodeAddress } from "@polkadot/util-crypto";
-import { useApi } from "@/defi/queries/defi/usePicassoApi";
 import { SubstrateNetworkId } from "shared";
 import { ApiPromise } from "@polkadot/api";
 import { SupportedWalletId, useWalletStore } from "@/stores/defi/wallet";

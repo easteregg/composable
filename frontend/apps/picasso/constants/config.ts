@@ -1,6 +1,9 @@
 import { SubstrateNetwork, SubstrateNetworkId } from "shared";
 import { AllowedTransferList } from "@/defi/types";
 import { getEnvironment } from "endpoints";
+import { createKusamaApi } from "@/defi/network/kusama";
+import { createPicassoApi } from "@/defi/network/picasso";
+import { createStatemineApi } from "@/defi/network/statemine";
 
 const config = {
   governanceUrl: "https://picasso.polkassembly.io/",
@@ -98,6 +101,11 @@ const config = {
       decimals: 12,
     },
   } as Record<SubstrateNetworkId, SubstrateNetwork>,
+  supportedChains: [
+    ["kusama", createKusamaApi],
+    ["picasso", createPicassoApi],
+    ["statemine", createStatemineApi],
+  ],
   evmNetworks: {
     1: {
       name: "Ethereum",

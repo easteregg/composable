@@ -19,6 +19,7 @@ import {
 import { PolkadotConnect } from "../Organisms/Wallet/PolkadotConnect";
 import { GlobalSettings } from "../Organisms/Settings/GlobalSettings";
 import { ExternalLinksDropdown } from "@/components/Molecules/ExternalLinksDropdown";
+import { useApi } from "@/defi/queries/defi/useApi";
 
 type DefaultLayoutProps = {
   breadcrumbs?: ReactNode[];
@@ -30,6 +31,7 @@ export const DefaultLayout: FC<DefaultLayoutProps> = (props) => {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const drawerWidth = isTablet ? 240 : 320;
+  const { isLoading, data } = useApi();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

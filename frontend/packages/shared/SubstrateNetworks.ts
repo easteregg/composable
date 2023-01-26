@@ -1,7 +1,12 @@
 import { TokenId } from "tokens";
 import { SUBSTRATE_NETWORKS } from "./defi/constants";
 
-export const SubstrateNetworks = ["kusama", "picasso", "karura", "statemine"] as const;
+export const SubstrateNetworks = [
+  "kusama",
+  "picasso",
+  "karura",
+  "statemine",
+] as const;
 export type SubstrateNetworkId = typeof SubstrateNetworks[number];
 export type SubstrateNetwork = {
   relayChain: "polkadot" | "kusama";

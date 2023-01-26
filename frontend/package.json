@@ -25,23 +25,5 @@
     "node": ">=14.0.0"
   },
   "dependencies": {},
-  "packageManager": "yarn@1.22.15",
-  "resolutions": {
-    "@types/react": "17.0.39",
-    "@types/react-dom": "17.0.17",
-    "react": "17.0.2",
-    "react-dom": "^17.0.2",
-    "notistack": "3.0.0-alpha.2",
-    "@polkadot/api": "^9.6.2",
-    "@polkadot/api-derive": "^9.6.2",
-    "@polkadot/ts": "^0.4.22",
-    "@polkadot/typegen": "^9.6.2",
-    "@polkadot/types": "^9.6.2",
-    "@polkadot/types-augment": "^9.6.2",
-    "@polkadot/types-codec": "^9.6.2",
-    "@polkadot/types-create": "^9.6.2",
-    "@polkadot/types-known": "^9.6.2",
-    "@polkadot/types-support": "^9.6.2",
-    "axios": "1.2.1"
-  }
+  "packageManager": "yarn@1.22.15"
 }
