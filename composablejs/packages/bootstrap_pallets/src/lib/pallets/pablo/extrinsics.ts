@@ -78,19 +78,25 @@ export async function addLiquidity(
   wallet: KeyringPair,
   poolId: BigNumber,
   baseAmount: string,
-  quoteAmount: string
+  quoteAmount: string,
+  baseAsset: string,
+  quoteAsset: string
 ) {
   const baseAmountParam = api.createType("u128", baseAmount);
   const quoteAmountParam = api.createType("u128", quoteAmount);
   const keepAliveParam = api.createType("bool", false);
+  const assets = api.createType("BTreeMap<u128, u128>", {
+    [baseAsset]: baseAmountParam,
+    [quoteAsset]: quoteAmountParam
+  });
+
   return await sendAndWaitFor(
     api,
     wallet,
     api.events.pablo.LiquidityAdded.is,
     api.tx.pablo.addLiquidity(
       poolId.toString(),
-      baseAmountParam,
-      quoteAmountParam,
+      assets,
       0, // min mint amount
       keepAliveParam
     )
@@ -160,19 +166,21 @@ export async function swapTokenPairs(
   minReceiveAmount = 0
 ) {
   const poolIdParam = api.createType("u128", poolId);
-  const currencyPair = api.createType("ComposableTraitsDefiCurrencyPairCurrencyId", {
-    base: api.createType("u128", baseAssetId),
-    quote: api.createType("u128", quoteAssetId)
+  const minReceiveParam = api.createType("ComposableTraitsDexAssetAmount", {
+    assetId: api.createType("u128", baseAssetId),
+    amount: api.createType("u128", minReceiveAmount)
   });
-  const quoteAmountParam = api.createType("u128", quoteAmount);
-  const minReceiveParam = api.createType("u128", minReceiveAmount);
   const keepAliveParam = api.createType("bool", true);
+  const poolAssetsSwapped = api.createType("ComposableTraitsDexAssetAmount", {
+    assetId: api.createType("u128", quoteAssetId),
+    amount: api.createType("u128", quoteAmount)
+  });
 
   return await sendAndWaitForSuccess(
     api,
     wallet,
     api.events.pablo.Swapped.is,
-    api.tx.pablo.swap(poolIdParam, currencyPair as any, quoteAmountParam, minReceiveParam, keepAliveParam)
+    api.tx.pablo.swap(poolIdParam, poolAssetsSwapped, minReceiveParam, keepAliveParam)
   );
 }
 

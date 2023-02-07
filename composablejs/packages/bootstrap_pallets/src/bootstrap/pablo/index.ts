@@ -73,7 +73,9 @@ export async function bootstrapPools(api: ApiPromise, wallets: KeyringPair[], wa
             wallets[walletIndex],
             poolId,
             pool.liquidityAmount.base,
-            pool.liquidityAmount.quote
+            pool.liquidityAmount.quote,
+            pool.pair.base,
+            pool.pair.quote,
           );
           logger.log('info', `Liquidity Added to Pool: ${poolId.toString()}`);
         }
