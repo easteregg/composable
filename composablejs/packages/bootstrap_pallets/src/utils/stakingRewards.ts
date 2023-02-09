@@ -28,8 +28,14 @@ export function toStakingRewardPoolConfig(
       endBlock: api.createType("u32", endBlock.toString()),
       rewardConfigs: api.createType("BTreeMap<u128, ComposableTraitsStakingRewardConfig>", initialConfig),
       lock: api.createType("ComposableTraitsStakingLockLockConfig", {
-        // time presets for locking
-        durationPresets: api.createType("BTreeMap<u64, Perbill>", poolConfig.lock.durationPresets),
+        durationMultipliers: {
+          "Presets": {
+            "0": 1000000000, // 1x default rate
+            "12": 1250000000, // 1.25x for 12 seconds lock time
+            "600": 1500000000, // 1.5x for 600 seconds lock time
+            "1200": 2000000000 // 2x for 1200 seconds lock time
+          }
+        },
         // early unlock penalty
         unlockPenalty: api.createType("Perbill", poolConfig.lock.unlockPenalty)
       }),

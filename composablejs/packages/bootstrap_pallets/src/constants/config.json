@@ -19,9 +19,9 @@
   ],
   "pools": [
     {
-      "addDexRoute": true,
-      "addLiquidity": true,
-      "enableTwap": true,
+      "addDexRoute": false,
+      "addLiquidity": false,
+      "enableTwap": false,
       "liquidityAmount": {
         "base": "100000000000000000",
         "quote": "100000000000000000"
@@ -61,11 +61,11 @@
   ],
   "stakingRewardPools": [
     {
-      "assetId": "130",
+      "assetId": "1",
       "endBlock": "5000",
       "rewardConfigs": {
-        "131": {
-          "assetId": "131",
+        "1": {
+          "assetId": "1",
           "maxRewards": "10000000000000000000",
           "rewardRate": {
             "period": "PerSecond",
@@ -80,8 +80,8 @@
         },
         "unlockPenalty": "10000000"
       },
-      "financialNftAssetId": "2130",
-      "shareAssetId": "1300",
+      "financialNftAssetId": "2001",
+      "shareAssetId": "1001",
       "minimumStakingAmount": "1000000000000"
     }
   ],
@@ -90,7 +90,7 @@
     "vestingPeriod": "86400000"
   },
   "mintAssets": [
-    ["5y4xiEmy4Kp3GPH7hUHDnNwwqeoEHgRbMp6HGW2iRKRu5DG2", "1", "5000000000000000"],
+    ["5y4xiEmy4Kp3GPH7hUHDnNwwqeoEHgRbMp6HGW2iRKRu5DG2", "1", "100000000000000000000000000"],
     ["5y4xiEmy4Kp3GPH7hUHDnNwwqeoEHgRbMp6HGW2iRKRu5DG2", "4", "5000000000000000"],
     ["5y4xiEmy4Kp3GPH7hUHDnNwwqeoEHgRbMp6HGW2iRKRu5DG2", "131", "5000000000000000"]
   ]
