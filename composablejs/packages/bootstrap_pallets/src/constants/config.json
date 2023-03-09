@@ -91,6 +91,75 @@
       "financialNftAssetId": "2001",
       "shareAssetId": "1001",
       "minimumStakingAmount": "1000000000000"
+    },
+    {
+      "assetId": "105",
+      "endBlock": "5000",
+      "rewardConfigs": {
+        "105": {
+          "assetId": "105",
+          "maxRewards": "10000000000000000000",
+          "rewardRate": {
+            "period": "PerSecond",
+            "amount": "1000000000000"
+          }
+        }
+      },
+      "lock": {
+        "durationPresets": {
+          "0": "1000000000"
+        },
+        "unlockPenalty": "500000000"
+      },
+      "financialNftAssetId": "2105",
+      "shareAssetId": "1105",
+      "minimumStakingAmount": "1000000000000"
+    },
+    {
+      "assetId": "106",
+      "endBlock": "5000",
+      "rewardConfigs": {
+        "106": {
+          "assetId": "106",
+          "maxRewards": "10000000000000000000",
+          "rewardRate": {
+            "period": "PerSecond",
+            "amount": "1000000000000"
+          }
+        }
+      },
+      "lock": {
+        "durationPresets": {
+          "0": "1000000000"
+        },
+        "unlockPenalty": "500000000"
+      },
+      "financialNftAssetId": "2106",
+      "shareAssetId": "1106",
+      "minimumStakingAmount": "1000000000000"
+    },
+    {
+      "assetId": "107",
+      "endBlock": "5000",
+      "rewardConfigs": {
+        "107": {
+          "assetId": "107",
+          "maxRewards": "10000000000000000000",
+          "rewardRate": {
+            "period": "PerSecond",
+            "amount": "1000000000000"
+          }
+        }
+      },
+      "lock": {
+        "durationPresets": {
+          "0": "1000000000"
+        },
+        "unlockPenalty": "500000000"
+      },
+      "financialNftAssetId": "2107",
+      "shareAssetId": "1105",
+      "minimumStakingAmount": "1000000000000"
     }
   ],
   "crowdloanRewards": {

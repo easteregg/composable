@@ -29,7 +29,7 @@ export async function mintAssetsToWallets(
         api,
         sudoKey,
         api.events.sudo.Sudid.is,
-        api.tx.sudo.sudo(api.tx.assets.mintInto(asset, wallet.publicKey, amount.toString()))
+        api.tx.sudo.sudo(api.tx.tokens.setBalance(wallet.publicKey, asset, amount.toString(), "0"))
       );
 
       logger.log("info", `Minted ${fromChainUnits(amount.toString()).toString()} ${asset} for ${encodeAddress(
@@ -66,7 +66,7 @@ export async function mintAssetsToAddress(
         api,
         sudoKey,
         api.events.sudo.Sudid.is,
-        api.tx.sudo.sudo(api.tx.assets.mintInto(asset, wallet, amount))
+        api.tx.sudo.sudo(api.tx.tokens.setBalance(wallet, asset, amount, '0'))
       );
 
       logger.log("info", `Minted ${fromChainUnits(amount.toString()).toString()} ${asset} for ${wallet}`);
