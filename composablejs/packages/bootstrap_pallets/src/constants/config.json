@@ -3,7 +3,7 @@
   "bootstrapBonds": false,
   "bootstrapCrowdloanRewards": false,
   "bootstrapRewardPools": true,
-  "mintAssetsToWallets": true,
+  "mintAssetsToWallets": false,
   "bondOffers": [
     {
       "asset": "4294967296",
@@ -22,99 +22,20 @@
       "addDexRoute": false,
       "addLiquidity": false,
       "enableTwap": false,
-      "liquidityAmount": {
-        "base": "100000000000000000",
-        "quote": "100000000000000000"
-      },
-      "pair": {
-        "base": "1",
-        "quote": "131"
-      },
-      "sale": {
-        "start": "0",
-        "end": "26800",
-        "initialWeight": "750000",
-        "finalWeight": "250000"
-      },
-      "feeConfig": {
-        "feeRate": "10000",
-        "ownerFeeRate": "10000",
-        "protocolFeeRate": "10000"
-      },
-      "startDelay": "25"
-    },
-    {
-      "addDexRoute": true,
-      "addLiquidity": true,
-      "enableTwap": true,
+      "dualAssetCpp": true,
       "liquidityAmount": {
         "base": "100000000000000000",
         "quote": "100000000000000000"
       },
       "pair": {
         "base": "4",
-        "quote": "131"
+        "quote": "130"
       },
       "fee": "10000",
       "baseWeight": "500000"
     }
   ],
   "stakingRewardPools": [
-    {
-      "assetId": "1",
-      "endBlock": "5000",
-      "rewardConfigs": {
-        "1": {
-          "assetId": "1",
-          "maxRewards": "10000000000000000000",
-          "rewardRate": {
-            "period": "PerSecond",
-            "amount": "1000000000000"
-          }
-        }
-      },
-      "lock": {
-        "durationPresets": {
-          "0": "1000000000",
-          "120": "2000000000",
-          "604800": "1800000000",
-          "1209600": "1100000000",
-          "2419200": "1200000000",
-          "3628800": "1250000000",
-          "4838400": "1300000000",
-          "6048000": "1350000000",
-          "7257600": "1400000000",
-          "8467200": "1500000000"
-        },
-        "unlockPenalty": "500000000"
-      },
-      "financialNftAssetId": "2001",
-      "shareAssetId": "1001",
-      "minimumStakingAmount": "1000000000000"
-    },
-    {
-      "assetId": "105",
-      "endBlock": "5000",
-      "rewardConfigs": {
-        "105": {
-          "assetId": "105",
-          "maxRewards": "10000000000000000000",
-          "rewardRate": {
-            "period": "PerSecond",
-            "amount": "1000000000000"
-          }
-        }
-      },
-      "lock": {
-        "durationPresets": {
-          "0": "1000000000"
-        },
-        "unlockPenalty": "500000000"
-      },
-      "financialNftAssetId": "2105",
-      "shareAssetId": "1105",
-      "minimumStakingAmount": "1000000000000"
-    },
     {
       "assetId": "106",
       "endBlock": "5000",
@@ -136,29 +57,6 @@
       },
       "financialNftAssetId": "2106",
       "shareAssetId": "1106",
-      "minimumStakingAmount": "1000000000000"
-    },
-    {
-      "assetId": "107",
-      "endBlock": "5000",
-      "rewardConfigs": {
-        "107": {
-          "assetId": "107",
-          "maxRewards": "10000000000000000000",
-          "rewardRate": {
-            "period": "PerSecond",
-            "amount": "1000000000000"
-          }
-        }
-      },
-      "lock": {
-        "durationPresets": {
-          "0": "1000000000"
-        },
-        "unlockPenalty": "500000000"
-      },
-      "financialNftAssetId": "2107",
-      "shareAssetId": "1105",
       "minimumStakingAmount": "1000000000000"
     }
   ],

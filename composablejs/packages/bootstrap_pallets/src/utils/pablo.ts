@@ -12,9 +12,9 @@ export function toPabloPoolPair(
   base: string,
   quote: string
 ): ComposableTraitsDefiCurrencyPairCurrencyId {
-  return api.createType("ComposableTraitsDefiCurrencyPairCurrencyId", {
-    base: api.createType("u128", base),
-    quote: api.createType("u128", quote)
+  return api.createType("BTreeMap<u128, Permill>", {
+    [base]: toPermill(api, "0.5"),
+    [quote]: toPermill(api, "0.5"),
   });
 }
 
@@ -98,6 +98,23 @@ export function toConstantProductPoolInitConfig(
       baseWeight: toPermill(api, poolConfig.baseWeight)
     }
   });
+}
+
+export function toDualAssetConstantProductPoolInitConfig(
+  api: ApiPromise,
+  owner: KeyringPair,
+  poolConfig: any
+): PalletPabloPoolInitConfiguration {
+  return api.createType("PalletPabloPoolInitConfiguration", {
+    DualAssetConstantProduct: {
+      owner: owner.publicKey,
+      assetWeights: api.createType("BTreeMap<u128, Permill>", {
+        [poolConfig.pair.base]: toPermill(api,poolConfig.baseWeight),
+        [poolConfig.pair.quote]: toPermill(api,poolConfig.baseWeight),
+      }),
+      fee: api.createType("Permill", toPermill(api, poolConfig.fee))
+    }
+  })
 }
 
 export function toStableSwapPoolInitConfig(

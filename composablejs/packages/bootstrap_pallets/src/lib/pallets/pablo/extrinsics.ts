@@ -18,6 +18,19 @@ export async function createLiquidityBootstrappingPool(
   );
 }
 
+export async function createDualAssetConstantProductPool(
+  api: ApiPromise,
+  sudoKey: KeyringPair,
+  config: PalletPabloPoolInitConfiguration
+) {
+  return await sendAndWaitForSuccess(
+    api,
+    sudoKey,
+    api.events.pablo.PoolCreated.is,
+    api.tx.sudo.sudo(api.tx.pablo.create(config))
+  )
+}
+
 export async function updateDexRoute(
   api: ApiPromise,
   walletSudo: KeyringPair,

@@ -1,9 +1,9 @@
-import { ApiPromise } from "@polkadot/api";
-import { KeyringPair } from "@polkadot/keyring/types";
+import {ApiPromise} from "@polkadot/api";
+import {KeyringPair} from "@polkadot/keyring/types";
 import {
   logger,
   toChainUnits,
-  toConstantProductPoolInitConfig,
+  toConstantProductPoolInitConfig, toDualAssetConstantProductPoolInitConfig,
   toLiquidityBootstrappingPoolInitConfig,
   toPabloPoolPair,
   toStableSwapPoolInitConfig
@@ -16,7 +16,7 @@ import {
   createConstantProductPool,
   createLiquidityBootstrappingPool,
   enableTwap,
-  updateDexRoute
+  updateDexRoute, createDualAssetConstantProductPool
 } from "@composable/bootstrap_pallets/lib";
 
 export async function bootstrapPools(api: ApiPromise, wallets: KeyringPair[], walletSudo: KeyringPair): Promise<void> {
@@ -27,7 +27,22 @@ export async function bootstrapPools(api: ApiPromise, wallets: KeyringPair[], wa
   for (const pool of config.pools as any[]) {
     let poolId;
     try {
-      if (pool.sale) {
+      if (pool.dualAssetCpp) {
+        const poolConfig = toDualAssetConstantProductPoolInitConfig(
+          api,
+          wallets[walletIndex],
+          pool
+        );
+        logger.log('info', JSON.stringify({
+          pc: typeof poolConfig,
+          poolConfig,
+          awc: typeof poolConfig.asDualConstantProductPool?.assetWeights,
+          adcc: poolConfig?.asDualConstantProductPool
+        }));
+        const poolCreated = await createDualAssetConstantProductPool(api, walletSudo, poolConfig);
+        logger.log('info', `Pool created: ${poolCreated.data[0].toString()}`);
+        poolId = new BigNumber(poolCreated.data[0].toString());
+      } else if (pool.sale) {
         const start = await api.query.system.number();
         const lbpConfig = toLiquidityBootstrappingPoolInitConfig(
           api,

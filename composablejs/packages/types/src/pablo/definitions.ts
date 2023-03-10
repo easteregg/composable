@@ -58,7 +58,12 @@ export default {
             ownerFeeRate: "Permill",
             protocolFeeRate: "Permill"
           }
-        }
+        },
+        DualAssetConstantProduct: {
+          owner: "AccountId32",
+          assetsWeights: "BTreeMap<u128, Permill>",
+          fee: "Permill",
+        },
       }
     },
     PalletPabloPriceCumulative: "Null",

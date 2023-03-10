@@ -4,6 +4,7 @@
 import type { ComposableTraitsDefiCurrencyPairCurrencyId, CustomRpcBalance, CustomRpcCurrencyId, SafeRpcWrapper } from '@composable/types/common';
 import type { Enum, Null, Struct, u128, u16 } from '@polkadot/types-codec';
 import type { AccountId32, BlockNumber, Permill } from '@polkadot/types/interfaces/runtime';
+import {BTreeMap} from "@polkadot/types-codec";
 
 /** @name ComposableTraitsDexFee */
 export interface ComposableTraitsDexFee extends Struct {
@@ -48,6 +49,13 @@ export interface PalletPabloPoolConfiguration extends Enum {
     readonly ownerFeeRate: Permill;
     readonly protocolFeeRate: Permill;
   } & Struct;
+  } & Struct;
+
+  readonly isDualConstantProductPool: boolean;
+  readonly asDualConstantProductPool: {
+    readonly owner: AccountId32;
+    readonly assetWeights: BTreeMap<u128, Permill>;
+    readonly fee: Permill;
   } & Struct;
   readonly type: 'StableSwap' | 'ConstantProduct' | 'LiquidityBootstrapping';
 }
